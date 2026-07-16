@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Sanjeevani — AI Chemistry Copilot for Indian Patent Discovery</title>
+  <meta name="description" content="Sanjeevani scans pre-publication chemistry papers, extracts molecules, checks structural novelty, and surfaces patent candidates for India's TTOs and IP cells."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="landing.css"/>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     HEADER
+     ═══════════════════════════════════════════════════════════════════════ -->
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="#" class="logo">
+      <div class="logo-icon">S</div>
+      <div class="logo-text">
+        <div class="logo-name">Sanjeevani</div>
+        <div class="logo-sub">Chemistry Copilot</div>
+      </div>
+    </a>
+
+    <nav class="nav-links" id="nav">
+      <a href="#features">Overview</a>
+      <a href="#workflow">Workflow</a>
+      <a href="#stack">Stack</a>
+      <a href="#institutes">For Institutes</a>
+      <a href="#cta">Contact</a>
+      <a href="#cta" class="btn btn-primary">Request Early Access</a>
+    </nav>
+
+    <button class="hamburger" id="menu-btn" aria-label="Toggle menu"
+            onclick="document.getElementById('nav').classList.toggle('open')">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     HERO
+     ═══════════════════════════════════════════════════════════════════════ -->
+<section class="hero" id="hero">
+  <div class="container">
+    <div class="hero-grid">
+      <!-- Left -->
+      <div class="hero-left">
+        <div class="hero-tag">🚨 India's Section 31 grace period: <strong style="margin-left:4px;font-family:var(--ff-mono)">12 months</strong></div>
+        <h1>Turn India's chemistry papers into <em>patents</em> before they disappear.</h1>
+        <p class="hero-sub">
+          Sanjeevani sits at the pre-publication checkpoint, extracts every molecule,
+          checks structural &amp; process-route novelty against global databases,
+          and surfaces patent candidates for your IP cell — before the disclosure
+          clock expires.
+        </p>
+        <div class="hero-buttons">
+          <a href="#cta" class="btn btn-primary" style="padding:12px 28px;font-size:var(--fs-base)">Book a demo</a>
+          <a href="#workflow" class="btn btn-outline" style="padding:12px 28px;font-size:var(--fs-base)">View workflow ↓</a>
+        </div>
+      </div>
+
+      <!-- Right — novelty card -->
+      <div class="hero-right">
+        <div class="novelty-card">
+          <div class="novelty-title">⚗ Novelty Check — Live</div>
+          <div class="novelty-stat">
+            <span class="label">Molecules scanned today</span>
+            <span class="value teal">128</span>
+          </div>
+          <div class="novelty-stat">
+            <span class="label">Potential patent candidates</span>
+            <span class="value emerald">9</span>
+          </div>
+          <div class="novelty-stat">
+            <span class="label">Institutions connected</span>
+            <span class="value amber">12</span>
+          </div>
+          <div class="novelty-stat">
+            <span class="label">Avg. novelty score</span>
+            <span class="value teal">0.87</span>
+          </div>
+          <!-- Molecular network decoration -->
+          <div class="mol-net">
+            <svg width="100%" height="80" style="position:absolute;top:0;left:0">
+              <line x1="20%" y1="15" x2="45%" y2="55" stroke="rgba(20,184,166,.2)" stroke-width="1"/>
+              <line x1="45%" y1="55" x2="70%" y2="25" stroke="rgba(20,184,166,.2)" stroke-width="1"/>
+              <line x1="70%" y1="25" x2="88%" y2="40" stroke="rgba(20,184,166,.15)" stroke-width="1"/>
+              <line x1="15%" y1="65" x2="45%" y2="55" stroke="rgba(20,184,166,.15)" stroke-width="1"/>
+              <line x1="60%" y1="70" x2="45%" y2="55" stroke="rgba(20,184,166,.12)" stroke-width="1"/>
+              <circle cx="20%" cy="15" r="5" fill="#14b8a6" opacity=".5"/>
+              <circle cx="45%" cy="55" r="6" fill="#14b8a6" opacity=".65"/>
+              <circle cx="70%" cy="25" r="4" fill="#10b981" opacity=".5"/>
+              <circle cx="88%" cy="40" r="5" fill="#14b8a6" opacity=".4"/>
+              <circle cx="15%" cy="65" r="4" fill="#10b981" opacity=".45"/>
+              <circle cx="60%" cy="70" r="5" fill="#14b8a6" opacity=".4"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider"/>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     FEATURES
+     ═══════════════════════════════════════════════════════════════════════ -->
+<section class="section" id="features">
+  <div class="container">
+    <div class="section-label">Capabilities</div>
+    <h2 class="section-title">Everything between discovery and disclosure</h2>
+    <div class="features-grid">
+
+      <div class="feature-card">
+        <div class="feature-icon">🧬</div>
+        <h3>Structural Novelty</h3>
+        <p>Molecule-level fingerprint search against ChEMBL, PubChem, and global patent compound databases via Tanimoto similarity.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⚗️</div>
+        <h3>Route Patents</h3>
+        <p>Independent process-route novelty suggestions for known APIs — even if the molecule is known, your route may not be.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🧪</div>
+        <h3>Synthesis Copilot</h3>
+        <p>AiZynthFinder-style retrosynthetic route proposals tuned for Indian reagent supply chains and local availability.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⏱️</div>
+        <h3>Grace Period Awareness</h3>
+        <p>Automatic Section 31 disclosure countdown with 30-day, 7-day, and critical alerts for Indian patent law compliance.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <h3>Bench-to-Scale Signal</h3>
+        <p>Toxicity pre-screening (SwissADME/ADMETlab) and cost-of-goods hints — bench viability vs. plant-scale feasibility.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🏛️</div>
+        <h3>Cross-Institution Scan</h3>
+        <p>Detects duplicate filings across institutions in the same network, preventing wasted IP budgets and legal conflicts.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider"/>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     WORKFLOW
+     ═══════════════════════════════════════════════════════════════════════ -->
+<section class="section workflow" id="workflow">
+  <div class="container">
+    <div class="section-label">Process</div>
+    <h2 class="section-title">From paper to patent in one loop</h2>
+    <div class="timeline">
+
+      <div class="step">
+        <div class="step-badge">1</div>
+        <div class="step-line"></div>
+        <div>
+          <h4>Upload manuscript</h4>
+          <p style="font-size:.8rem;color:var(--gray-500)">PDF or raw text, pre-publication</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-badge">2</div>
+        <div class="step-line"></div>
+        <div>
+          <h4>Extract molecules</h4>
+          <p style="font-size:.8rem;color:var(--gray-500)">SMILES canonicalization via OPSIN &amp; DECIMER</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-badge">3</div>
+        <div class="step-line"></div>
+        <div>
+          <h4>Novelty &amp; prior-art scan</h4>
+          <p style="font-size:.8rem;color:var(--gray-500)">RDKit fingerprints vs. global compound databases</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-badge">4</div>
+        <div class="step-line"></div>
+        <div>
+          <h4>Synthesis &amp; safety copilot</h4>
+          <p style="font-size:.8rem;color:var(--gray-500)">Route proposals + toxicity/cost hints</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-badge">5</div>
+        <div>
+          <h4>Patent-ready dossier</h4>
+          <p style="font-size:.8rem;color:var(--gray-500)">Exportable report for your IP cell</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider"/>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     STACK
+     ═══════════════════════════════════════════════════════════════════════ -->
+<section class="section" id="stack">
+  <div class="container">
+    <div class="section-label">Technology</div>
+    <h2 class="section-title">Built on open science, tuned for India</h2>
+    <div class="stack-grid">
+      <div class="stack-text">
+        <p>
+          Sanjeevani's backend is a <strong style="color:var(--white)">Python / FastAPI</strong> service
+          powered by <strong style="color:var(--white)">RDKit</strong> for cheminformatics,
+          <strong style="color:var(--white)">OPSIN</strong> and <strong style="color:var(--white)">DECIMER</strong>
+          for IUPAC-to-SMILES conversion, and
+          <strong style="color:var(--white)">AiZynthFinder</strong> for retrosynthetic route planning.
+        </p>
+        <p>
+          Safety profiling uses <strong style="color:var(--white)">SwissADME</strong> and
+          <strong style="color:var(--white)">ADMETlab</strong> for ADMET screening.
+          Patent searches query WIPO, EPO, and Indian patent office APIs.
+          The orchestration layer is a <strong style="color:var(--white)">Spring Boot</strong> gateway
+          that the React frontend consumes via REST/JSON.
+        </p>
+      </div>
+      <div class="stack-card">
+        <div class="stack-group">
+          <div class="stack-group-title">Backend / API Gateway</div>
+          <ul>
+            <li>Spring Boot (Java 21)</li>
+            <li>Python / FastAPI microservice</li>
+            <li>PostgreSQL + Redis</li>
+          </ul>
+        </div>
+        <div class="stack-group">
+          <div class="stack-group-title">Chemistry Engines</div>
+          <ul>
+            <li>RDKit · OPSIN · DECIMER</li>
+            <li>AiZynthFinder (retrosynthesis)</li>
+            <li>SwissADME · ADMETlab</li>
+          </ul>
+        </div>
+        <div class="stack-group">
+          <div class="stack-group-title">Frontend</div>
+          <ul>
+            <li>React 18 + Vite</li>
+            <li>TanStack Query + Axios</li>
+            <li>smiles-drawer (2D rendering)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider"/>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     FOR INSTITUTES
+     ═══════════════════════════════════════════════════════════════════════ -->
+<section class="section institutes" id="institutes">
+  <div class="container">
+    <div class="section-label">For IP Cells &amp; TTOs</div>
+    <h2 class="section-title">Plugs into your existing workflow</h2>
+    <div class="inst-grid">
+      <div class="inst-text">
+        <h3>No extra clicks for researchers</h3>
+        <p>
+          Sanjeevani integrates at the mandatory pre-publication checkpoint — the same step
+          where plagiarism checks already happen. Researchers don't change their workflow;
+          your TTO gains molecule-level patent intelligence automatically.
+        </p>
+        <ul class="inst-list">
+          <li><span class="check">✓</span> Zero added friction for faculty submissions</li>
+          <li><span class="check">✓</span> Cross-institution duplicate detection</li>
+          <li><span class="check">✓</span> Configurable export for IP cells and law firms</li>
+          <li><span class="check">✓</span> Section 31 countdown alerts to TTO email</li>
+          <li><span class="check">✓</span> Audit trail for every scanned molecule</li>
+        </ul>
+      </div>
+      <div>
+        <div class="inst-panel">
+          <h4>Integration Options</h4>
+          <p>
+            Sanjeevani connects to your existing infrastructure via standard APIs.
+            We support direct integration with institutional portals, Shodhganga,
+            and custom REST endpoints for IP management systems.
+          </p>
+          <div class="tag-row">
+            <span class="tag">Shodhganga</span>
+            <span class="tag">Internal IP Portal</span>
+            <span class="tag">Custom REST API</span>
+            <span class="tag">Email Alerts</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider"/>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     CTA
+     ═══════════════════════════════════════════════════════════════════════ -->
+<section class="section cta" id="cta">
+  <div class="container">
+    <div class="cta-card">
+      <h2>Pilot Sanjeevani in your institute</h2>
+      <p>
+        We're inviting Indian universities, CSIR labs, NIPERs, and pharma R&amp;D units
+        to run a 60-day pilot. No cost, no commitment — just better patent capture.
+      </p>
+      <form class="cta-form" onsubmit="event.preventDefault()">
+        <input type="email" placeholder="you@institution.ac.in" required/>
+        <button type="submit" class="btn btn-primary">Request early access</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     FOOTER
+     ═══════════════════════════════════════════════════════════════════════ -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-links">
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+      <a href="#">Docs</a>
+      <a href="#">GitHub</a>
+    </div>
+    <div class="footer-copy">© 2026 Sanjeevani Labs · Built for India's chemistry researchers</div>
+  </div>
+</footer>
+
+</body>
+</html>
