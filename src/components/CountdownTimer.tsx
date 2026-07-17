@@ -17,7 +17,10 @@ interface TimeLeft {
 }
 
 function calcTimeLeft(deadline: string): TimeLeft {
-  const diff = new Date(deadline).getTime() - Date.now();
+  if (!deadline) return { days: 0, hours: 0, minutes: 0, seconds: 0 };
+  const parsed = new Date(deadline).getTime();
+  if (isNaN(parsed)) return { days: 0, hours: 0, minutes: 0, seconds: 0 };
+  const diff = parsed - Date.now();
   if (diff <= 0) return { days: 0, hours: 0, minutes: 0, seconds: 0 };
   return {
     days: Math.floor(diff / (1000 * 60 * 60 * 24)),
