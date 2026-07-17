@@ -52,14 +52,14 @@ function DisclosureCard({ window: dw }: { window: DisclosureWindow }) {
     >
       <div className="min-w-0 flex-1">
         <p className="text-sm font-semibold text-navy-800">
-          Molecule {dw.moleculeId.slice(0, 8)}...
+          Paper #{dw.paperId} Disclosure
         </p>
         <p className="text-xs text-navy-400">
           {dw.daysRemaining} days remaining
         </p>
       </div>
       <Link
-        to={`/molecules/${dw.moleculeId}`}
+        to={`/papers/${dw.paperId}`}
         className="shrink-0 text-saffron-600 hover:text-saffron-700"
       >
         <ArrowRight className="h-5 w-5" />
