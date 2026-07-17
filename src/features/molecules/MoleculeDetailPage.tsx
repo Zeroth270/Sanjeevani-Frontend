@@ -62,7 +62,7 @@ export default function MoleculeDetailPage() {
 
   const { data: windows } = useDisclosureWindows();
 
-  const disclosureWindow = windows?.content?.find((w) => w.moleculeId === id);
+  const disclosureWindow = windows?.content?.find((w) => String(w.paperId) === String(molecule?.paperId));
   const { mutate: startWindow, isPending: startingWindow } =
     useStartDisclosureWindow();
 
