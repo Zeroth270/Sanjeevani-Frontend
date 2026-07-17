@@ -23,8 +23,8 @@ export const papersApi = {
             id: String(p.id),
             uploadedAt: p.createdAt,
             status: statusMapped,
-            moleculeCount: p.molecules ? p.molecules.length : 0,
-            novelMoleculeCount: p.molecules ? p.molecules.filter((m: any) => m.latestScan?.isNovel).length : 0,
+            moleculeCount: p.moleculeCount !== undefined ? p.moleculeCount : (p.molecules ? p.molecules.length : 0),
+            novelMoleculeCount: p.novelMoleculeCount !== undefined ? p.novelMoleculeCount : (p.molecules ? p.molecules.filter((m: any) => m.latestScan?.isNovel).length : 0),
           };
         });
         return {

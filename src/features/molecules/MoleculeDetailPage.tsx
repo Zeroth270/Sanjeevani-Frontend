@@ -240,7 +240,7 @@ export default function MoleculeDetailPage() {
             <div className="w-full shrink-0 md:w-72">
               {disclosureWindow ? (
                 <CountdownTimer
-                  deadline={disclosureWindow.deadline}
+                  deadline={disclosureWindow.deadlineDate}
                   daysRemaining={disclosureWindow.daysRemaining}
                   label="Grace Period Remaining"
                 />
