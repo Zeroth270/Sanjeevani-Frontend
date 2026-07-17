@@ -2,7 +2,6 @@ import { lazy } from 'react';
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 import { Layout } from '@/components/Layout';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
-import { ProtectedRoute } from '@/components/ProtectedRoute';
 
 const LandingPage = lazy(() => import('@/features/landing/LandingPage'));
 const LoginPage = lazy(() => import('@/features/auth/LoginPage'));
@@ -27,70 +26,14 @@ export const router = createBrowserRouter([
       { path: '/', element: <LandingPage /> },
       { path: '/login', element: <LoginPage /> },
       { path: '/register', element: <RegisterPage /> },
-      {
-        path: '/dashboard',
-        element: (
-          <ProtectedRoute>
-            <DashboardPage />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: '/papers',
-        element: (
-          <ProtectedRoute>
-            <PapersPage />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: '/papers/upload',
-        element: (
-          <ProtectedRoute>
-            <PaperUploadPage />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: '/papers/:id',
-        element: (
-          <ProtectedRoute>
-            <PaperDetailPage />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: '/molecules/:id',
-        element: (
-          <ProtectedRoute>
-            <MoleculeDetailPage />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: '/alerts',
-        element: (
-          <ProtectedRoute>
-            <AlertsPage />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: '/admin/institution',
-        element: (
-          <ProtectedRoute requiredRole="ADMIN">
-            <AdminInstitutionPage />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: '/settings',
-        element: (
-          <ProtectedRoute>
-            <SettingsPage />
-          </ProtectedRoute>
-        ),
-      },
+      { path: '/dashboard', element: <DashboardPage /> },
+      { path: '/papers', element: <PapersPage /> },
+      { path: '/papers/upload', element: <PaperUploadPage /> },
+      { path: '/papers/:id', element: <PaperDetailPage /> },
+      { path: '/molecules/:id', element: <MoleculeDetailPage /> },
+      { path: '/alerts', element: <AlertsPage /> },
+      { path: '/admin/institution', element: <AdminInstitutionPage /> },
+      { path: '/settings', element: <SettingsPage /> },
       { path: '*', element: <Navigate to="/" replace /> },
     ],
   },
