@@ -1,55 +1,30 @@
-import { useState, useEffect, useRef } from 'react';
-import { motion, useMotionValue, useTransform } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Link, useLocation } from 'react-router-dom';
 import {
   FlaskConical,
   ArrowRight,
   Sun,
   Moon,
-  Zap,
-  Clock,
-  Sparkles
+  FileSearch,
+  BrainCircuit,
+  Bell
 } from 'lucide-react';
 import { Timeline } from '@/components/ui/Timeline';
 import { useDarkMode } from '@/hooks/useDarkMode';
-
-function OrbitingElectron({ rx, ry, rotation: deg, duration, direction = 1, phaseOffset = 0, sphereGradient, r = 10 }: {
-  rx: number; ry: number; rotation: number; duration: number;
-  direction?: number; phaseOffset?: number; sphereGradient: string; r?: number;
-}) {
-  const angle = useMotionValue(phaseOffset);
-  const startRef = useRef(performance.now());
-
-  useEffect(() => {
-    startRef.current = performance.now();
-    let rafId: number;
-    function tick() {
-      const elapsed = (performance.now() - startRef.current) / 1000;
-      const t = (elapsed % duration) / duration;
-      angle.set(phaseOffset + t * 360 * direction);
-      rafId = requestAnimationFrame(tick);
-    }
-    rafId = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(rafId);
-  }, [angle, phaseOffset, duration, direction]);
-
-  const rad = (deg * Math.PI) / 180;
-
-  const cx = useTransform(angle, (v) => {
-    const vr = (v * Math.PI) / 180;
-    return 200 + rx * Math.cos(vr) * Math.cos(rad) - ry * Math.sin(vr) * Math.sin(rad);
-  });
-
-  const cy = useTransform(angle, (v) => {
-    const vr = (v * Math.PI) / 180;
-    return 200 + rx * Math.cos(vr) * Math.sin(rad) + ry * Math.sin(vr) * Math.cos(rad);
-  });
-
-  return <motion.circle r={r} fill={sphereGradient} cx={cx} cy={cy} />;
-}
+import { AtomVector, ResearchPaperVector, PatentPaperVector } from './components/HeroVectors';
 
 export default function LandingPage() {
   const { isDark, toggle } = useDarkMode();
+  const { pathname, hash } = useLocation();
+  const [activeVector, setActiveVector] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveVector((prev) => (prev + 1) % 3);
+    }, 6000);
+    return () => clearInterval(timer);
+  }, []);
 
   return (
     <div className="relative min-h-screen bg-pearl-50 dark:bg-zinc-950 transition-colors duration-500 overflow-x-hidden">
@@ -64,8 +39,8 @@ export default function LandingPage() {
         {/* Subtle grid pattern */}
         <div className="absolute inset-0 bg-grid-pattern opacity-[0.03] dark:opacity-[0.04] pointer-events-none" />
 
-        {/* Top Header */}
-        <header className="relative z-50 flex items-center justify-between px-6 py-4 md:px-12 max-w-7xl mx-auto">
+        {/* Top Header — glassmorphism */}
+        <header className="relative z-50 flex items-center justify-between px-6 py-3 md:px-8 max-w-7xl mx-auto rounded-2xl border border-zinc-200/50 dark:border-zinc-800/50 glass">
           <div className="flex items-center gap-2">
             <motion.div 
               className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-tr from-purple-500 to-purple-400 text-white shadow-md shadow-purple-500/20"
@@ -78,43 +53,59 @@ export default function LandingPage() {
             </span>
           </div>
 
-          {/* Minimal Navigation Links */}
-          <nav className="hidden md:flex items-center gap-1 text-xs font-medium text-zinc-500 dark:text-zinc-400">
-            <a href="#about" className="hover:text-zinc-900 dark:hover:text-white transition-colors px-3 py-1.5">About</a>
-            <a href="#idea" className="hover:text-zinc-900 dark:hover:text-white transition-colors px-3 py-1.5">How it Works</a>
-            <a href="#timeline" className="hover:text-zinc-900 dark:hover:text-white transition-colors px-3 py-1.5">Timeline</a>
-            <span className="mx-2 h-4 w-px bg-zinc-300 dark:bg-zinc-700" />
-            <Link to="/dashboard" className="hover:text-zinc-900 dark:hover:text-white transition-colors px-3 py-1.5">Dashboard</Link>
-            <Link to="/papers" className="hover:text-zinc-900 dark:hover:text-white transition-colors px-3 py-1.5">Papers</Link>
-            <Link to="/alerts" className="hover:text-zinc-900 dark:hover:text-white transition-colors px-3 py-1.5">Alerts</Link>
-            <Link to="/settings" className="hover:text-zinc-900 dark:hover:text-white transition-colors px-3 py-1.5">Settings</Link>
+          {/* Nav Links — active glows purple */}
+          <nav className="hidden md:flex items-center gap-1">
+            {[
+              { label: 'About', href: '#about', section: true },
+              { label: 'How it Works', href: '#idea', section: true },
+              { label: 'Timeline', href: '#timeline', section: true },
+              { label: 'Dashboard', href: '/dashboard', section: false },
+              { label: 'Papers', href: '/papers', section: false },
+              { label: 'Alerts', href: '/alerts', section: false },
+              { label: 'Settings', href: '/settings', section: false },
+            ].map((link) => {
+              const isActive = link.section
+                ? hash === link.href
+                : pathname === link.href;
+              const cls = `relative px-3 py-1.5 text-xs font-medium rounded-full border border-transparent transition-all duration-200 ${
+                isActive
+                  ? 'border-purple-500/50 text-zinc-500 dark:text-zinc-400'
+                  : 'text-zinc-500 dark:text-zinc-400 hover:border-purple-500/30'
+              }`;
+
+              return link.section ? (
+                <a key={link.href} href={link.href} className={cls} onClick={(e) => { e.preventDefault(); document.getElementById(link.href.slice(1))?.scrollIntoView({ behavior: 'smooth' }); }}>{link.label}</a>
+              ) : (
+                <Link key={link.href} to={link.href} className={cls}>{link.label}</Link>
+              );
+            })}
+            <span className="mx-2 h-4 w-px bg-zinc-300/50 dark:bg-zinc-700/50" />
           </nav>
 
-          <div className="flex items-center gap-4">
-            {/* Dark Mode Toggle Button */}
+          <div className="flex items-center gap-3">
             <motion.button
               onClick={toggle}
-              className="flex h-9 w-9 items-center justify-center rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-all cursor-pointer"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-zinc-200/50 dark:border-zinc-800/50 bg-white/60 dark:bg-white/5 backdrop-blur-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-all cursor-pointer"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               aria-label="Toggle theme"
             >
               {isDark ? (
-                <Sun className="h-4.5 w-4.5 text-saffron-400" />
+                <Sun className="h-4 w-4 text-saffron-400" />
               ) : (
-                <Moon className="h-4.5 w-4.5 text-zinc-650" />
+                <Moon className="h-4 w-4 text-zinc-650" />
               )}
             </motion.button>
 
             <Link
               to="/login"
-              className="text-xs font-semibold text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors px-3 py-2"
+              className="text-xs font-semibold text-zinc-500 dark:text-zinc-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors px-3 py-1.5 rounded-full hover:bg-white/60 dark:hover:bg-white/5"
             >
               Log in
             </Link>
             
             <Link to="/register">
-              <button className="text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600 text-white px-4 py-2 rounded-lg transition-all shadow-sm cursor-pointer">
+              <button className="text-xs font-semibold bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white px-4 py-2 rounded-full transition-all shadow-sm cursor-pointer">
                 Get Started
               </button>
             </Link>
@@ -161,158 +152,137 @@ export default function LandingPage() {
             </div>
           </motion.div>
 
-          {/* Interactive orbiting SVG Atom (Right) */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-6 flex justify-center relative select-none"
-          >
-            {/* Ambient glows behind the SVG */}
-            <div className="absolute w-[280px] h-[280px] rounded-full bg-purple-600/5 dark:bg-purple-600/10 blur-[80px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
-            <div className="absolute w-[180px] h-[180px] rounded-full bg-emerald-500/5 dark:bg-emerald-500/5 blur-[60px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
+          {/* Cycling Animated Vectors (Right) */}
+          <div className="lg:col-span-6 flex flex-col items-center justify-center relative select-none">
 
-            <motion.div
-              animate={{
-                y: [0, -10, 0],
-              }}
-              transition={{
-                duration: 6,
-                repeat: Infinity,
-                ease: 'easeInOut',
-              }}
-              className="w-full max-w-[340px] md:max-w-[420px] aspect-square flex items-center justify-center pointer-events-none"
-            >
-              <svg viewBox="0 0 400 400" className="w-full h-full">
-                <defs>
-                  {isDark ? (
-                    <radialGradient id="electronSphere" cx="30%" cy="30%" r="70%">
-                      <stop offset="0%" stopColor="#ffffff" />
-                      <stop offset="35%" stopColor="#e4e4e7" />
-                      <stop offset="70%" stopColor="#a1a1aa" />
-                      <stop offset="100%" stopColor="#3f3f46" />
-                    </radialGradient>
-                  ) : (
-                    <radialGradient id="electronSphere" cx="30%" cy="30%" r="70%">
-                      <stop offset="0%" stopColor="#71717a" />
-                      <stop offset="35%" stopColor="#3f3f46" />
-                      <stop offset="70%" stopColor="#18181b" />
-                      <stop offset="100%" stopColor="#020202" />
-                    </radialGradient>
-                  )}
-                </defs>
+            <div className="w-full max-w-[340px] md:max-w-[420px] aspect-square flex items-center justify-center relative overflow-visible">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeVector}
+                  initial={{ opacity: 0, x: 40, scale: 0.95 }}
+                  animate={{ opacity: 1, x: 0, scale: 1 }}
+                  exit={{ opacity: 0, x: -40, scale: 0.95 }}
+                  transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+                  className="w-full h-full flex items-center justify-center"
+                >
+                  {activeVector === 0 && <AtomVector isDark={isDark} />}
+                  {activeVector === 1 && <ResearchPaperVector isDark={isDark} />}
+                  {activeVector === 2 && <PatentPaperVector isDark={isDark} />}
+                </motion.div>
+              </AnimatePresence>
+            </div>
 
-                {/* Orbit 1 (Tilted 10°) */}
-                <ellipse
-                  cx="200" cy="200" rx="160" ry="55" fill="none"
-                  stroke={isDark ? "#ffffff" : "#18181b"}
-                  strokeWidth="1.5"
-                  opacity={isDark ? "0.6" : "0.7"}
-                  transform="rotate(10 200 200)"
+            {/* Slide Navigation Indicator Dots */}
+            <div className="flex gap-2.5 mt-4 z-20">
+              {[0, 1, 2].map((idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setActiveVector(idx)}
+                  className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
+                    activeVector === idx
+                      ? 'w-6 bg-purple-500 dark:bg-purple-400'
+                      : 'w-2 bg-zinc-300 dark:bg-zinc-800 hover:bg-zinc-400 dark:hover:bg-zinc-700'
+                  }`}
+                  aria-label={`Go to slide ${idx + 1}`}
                 />
-                <OrbitingElectron rx={160} ry={55} rotation={10} duration={5} sphereGradient="url(#electronSphere)" />
-
-                {/* Orbit 2 (Tilted 70°) */}
-                <ellipse
-                  cx="200" cy="200" rx="160" ry="55" fill="none"
-                  stroke={isDark ? "#ffffff" : "#18181b"}
-                  strokeWidth="1.5"
-                  opacity={isDark ? "0.6" : "0.7"}
-                  transform="rotate(70 200 200)"
-                />
-                <OrbitingElectron rx={160} ry={55} rotation={70} duration={5} direction={-1} sphereGradient="url(#electronSphere)" />
-
-                {/* Orbit 3 (Tilted -50°) */}
-                <ellipse
-                  cx="200" cy="200" rx="160" ry="55" fill="none"
-                  stroke={isDark ? "#ffffff" : "#18181b"}
-                  strokeWidth="1.5"
-                  opacity={isDark ? "0.6" : "0.7"}
-                  transform="rotate(-50 200 200)"
-                />
-                <OrbitingElectron rx={160} ry={55} rotation={-50} duration={5} sphereGradient="url(#electronSphere)" />
-
-                {/* 7. Central Nucleus Sphere (Adapts to theme) */}
-                {/* Outer Glow */}
-                <circle
-                  cx="200"
-                  cy="200"
-                  r="35"
-                  fill="none"
-                  stroke={isDark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.03)"}
-                  strokeWidth="6"
-                  className="animate-pulse"
-                />
-                {/* 3D Sphere */}
-                <circle
-                  cx="200"
-                  cy="200"
-                  r="30"
-                  fill="url(#electronSphere)"
-                />
-              </svg>
-            </motion.div>
-          </motion.div>
+              ))}
+            </div>
+          </div>
 
         </section>
       </div>
 
-      {/* 2. CORE IDEA SECTION ("What we are onto") */}
-      <section id="idea" className="py-24 px-6 md:px-12 max-w-7xl mx-auto bg-pearl-50 dark:bg-zinc-950 transition-colors duration-500">
-        <div className="grid gap-12 lg:grid-cols-12 items-start">
-          
-          {/* Header Description */}
-          <div className="lg:col-span-4 space-y-4">
-            <span className="text-[10px] font-mono tracking-widest text-emerald-600 dark:text-emerald-400 uppercase">
-              01 / The Mission
-            </span>
-            <h2 className="text-2xl md:text-3xl font-semibold tracking-tight text-zinc-900 dark:text-white font-display">
-              What we are onto.
-            </h2>
-            <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
-              Every year, key academic disclosures in chemistry are lost because publication happens before patent filing. We are building the bridge that captures disclosures early, giving universities the legal time they need to protect their intellectual property.
-            </p>
+      {/* 2. CORE IDEA SECTION ("What we are onto") — Stair Graphic + Video */}
+      <section id="idea" className="py-20 px-6 md:px-12 max-w-7xl mx-auto bg-pearl-50 dark:bg-zinc-950 transition-colors duration-500">
+        
+        <div className="grid lg:grid-cols-2 gap-10 items-center relative">
+
+          {/* Vertical divider */}
+          <div className="hidden lg:block absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-purple-500/5 via-purple-500/40 to-purple-500/5" />
+
+          {/* Left: Header + Stairs */}
+          <div className="space-y-12">
+            {/* Header */}
+            <div className="space-y-3">
+              <span className="text-[10px] font-mono tracking-widest text-purple-600 dark:text-purple-400 uppercase">
+                01 / The Mission
+              </span>
+              <h2 className="text-xl md:text-2xl font-semibold tracking-tight text-zinc-900 dark:text-white font-display">
+                What we are onto.
+              </h2>
+              <p className="max-w-xl text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
+                Every year, key academic disclosures in chemistry are lost because publication happens before patent filing. We are building the bridge that captures disclosures early, giving universities the legal time they need to protect their intellectual property.
+              </p>
+            </div>
+
+            {/* Purple divider */}
+            <div className="w-32 h-px bg-gradient-to-r from-purple-500/80 via-purple-500/40 to-transparent" />
+
+            {/* Stairs — step widths relative to this column */}
+            <div className="space-y-2.5">
+              {[
+                {
+                  num: '01', icon: FileSearch, title: 'Automated Ingestion',
+                  desc: 'Sanjeevani continuously scans publication sites, preprint platforms, and university portals to ingest research papers.',
+                  width: 'w-[85%]',
+                },
+                {
+                  num: '02', icon: BrainCircuit, title: 'Chemical NLP Parsing',
+                  desc: 'Our NLP core extracts molecular representations from complex inline texts, tables, and images, converting them into digital SMILES codes.',
+                  width: 'w-[93%]',
+                },
+                {
+                  num: '03', icon: Bell, title: 'Grace Window Alerts',
+                  desc: 'We monitor the legal 12-month grace window under India\'s Section 31 and alert Tech Transfer Offices to file before expiration.',
+                  width: 'w-full',
+                },
+              ].map((step, i) => {
+                const Icon = step.icon;
+
+                return (
+                  <motion.div
+                    key={step.num}
+                    initial={{ opacity: 0, x: -40 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true, margin: '-40px' }}
+                    transition={{ duration: 0.5, delay: i * 0.2, ease: [0.16, 1, 0.3, 1] }}
+                    className={step.width}
+                  >
+                    <div className="relative group">
+                      <div className="absolute left-0 top-0 bottom-0 w-[3px] rounded-full bg-gradient-to-b from-purple-500/60 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                      <div className="pl-6 md:pl-8 p-4 md:p-5 rounded-r-xl border border-l-0 border-purple-500/10 bg-white dark:bg-zinc-900/50 hover:border-purple-500/25 transition-all duration-300 shadow-sm hover:shadow-md hover:shadow-purple-500/5">
+                        <div className="flex items-center gap-3 mb-2">
+                          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-purple-500 to-purple-600 text-white shadow-sm shrink-0">
+                            <Icon className="h-4 w-4" />
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-[10px] font-mono tracking-wider text-purple-500 dark:text-purple-400 font-semibold">{step.num}</span>
+                            <h3 className="text-sm md:text-base font-semibold text-zinc-900 dark:text-white">{step.title}</h3>
+                          </div>
+                        </div>
+                        <p className="text-xs leading-relaxed text-zinc-500 dark:text-zinc-400">{step.desc}</p>
+                      </div>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
           </div>
 
-          {/* Minimal 3-part layout details */}
-          <div className="lg:col-span-8 grid gap-8 md:grid-cols-3">
-            
-            {/* Step 1 */}
-            <div className="space-y-3 pt-6 border-t border-zinc-200 dark:border-zinc-800">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-mono text-zinc-400 dark:text-zinc-600">01</span>
-                <Sparkles className="h-4 w-4 text-emerald-500" />
-              </div>
-              <h3 className="text-sm font-semibold text-zinc-900 dark:text-white">Automated Ingestion</h3>
-              <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
-                Sanjeevani continuously scans publication sites, preprint platforms, and university portals to ingest research papers.
-              </p>
+          {/* Right: Video — window frame */}
+          <div>
+            <div className="rounded-xl overflow-hidden border border-purple-500/20 bg-white shadow-lg shadow-purple-500/5">
+              {/* Window title bar */}
+              <div className="px-3 py-2.5 bg-zinc-100 dark:bg-zinc-800 border-b border-purple-500/10" />
+              <video
+                src="/hero-video.mp4"
+                autoPlay
+                muted
+                loop
+                playsInline
+                className="w-full h-auto block"
+              />
             </div>
-
-            {/* Step 2 */}
-            <div className="space-y-3 pt-6 border-t border-zinc-200 dark:border-zinc-800">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-mono text-zinc-400 dark:text-zinc-600">02</span>
-                <Zap className="h-4 w-4 text-saffron-500" />
-              </div>
-              <h3 className="text-sm font-semibold text-zinc-900 dark:text-white">Chemical NLP Parsing</h3>
-              <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
-                Our NLP core extracts molecular representations from complex inline texts, tables, and images, converting them into digital SMILES codes.
-              </p>
-            </div>
-
-            {/* Step 3 */}
-            <div className="space-y-3 pt-6 border-t border-zinc-200 dark:border-zinc-800">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-mono text-zinc-400 dark:text-zinc-600">03</span>
-                <Clock className="h-4 w-4 text-emerald-500" />
-              </div>
-              <h3 className="text-sm font-semibold text-zinc-900 dark:text-white">Grace Window Alerts</h3>
-              <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
-                We monitor the legal 12-month grace window under India&apos;s Section 31 and alert Tech Transfer Offices to file before expiration.
-              </p>
-            </div>
-
           </div>
 
         </div>
