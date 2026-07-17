@@ -54,7 +54,7 @@ export const papersApi = {
             id: String(m.id),
             smiles: m.smiles,
             iupacName: m.iupacName || m.extractedNameRaw,
-            confidenceScore: m.extractionConfidence != null ? Number(m.extractionConfidence) : 0,
+            confidenceScore: 0,
             status: status,
             noveltyScore: m.latestScan ? Number(m.latestScan.noveltyScore) : 0,
             tanimotoSimilarity: m.latestScan ? Number(m.latestScan.tanimotoSimilarity) : 0,

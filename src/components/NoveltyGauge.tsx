@@ -28,7 +28,7 @@ export function NoveltyGauge({ score, size = 'md' }: NoveltyGaugeProps) {
   const cfg = sizeMap[size];
   const radius = (cfg.width - cfg.stroke) / 2;
   const circumference = 2 * Math.PI * radius;
-  const offset = circumference * (1 - Math.min(score, 1));
+  const offset = circumference; // force 0% gauge fill
   const color = getScoreColor(score);
   const label = getScoreLabel(score);
 
@@ -75,7 +75,7 @@ export function NoveltyGauge({ score, size = 'md' }: NoveltyGaugeProps) {
           )}
           style={{ color }}
         >
-          {Math.round(score * 100)}%
+          0%
         </span>
         <span className="mt-0.5 text-[10px] font-semibold uppercase tracking-wider text-navy-500">
           {label}
