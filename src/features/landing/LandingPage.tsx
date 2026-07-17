@@ -153,7 +153,7 @@ export default function LandingPage() {
             </p>
 
             <div className="flex flex-wrap gap-4 pt-2">
-              <Link to="/register">
+              <Link to="/papers/upload">
                 <button className="flex items-center gap-1.5 text-xs font-semibold font-display bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600 text-white px-5 py-3 rounded-lg transition-all shadow-md shadow-emerald-500/10 cursor-pointer">
                   Start scanning research
                   <ArrowRight className="h-3.5 w-3.5" />
@@ -167,42 +167,26 @@ export default function LandingPage() {
             </div>
           </motion.div>
 
-          {/* Cycling Animated Vectors (Right) */}
-          <div className="lg:col-span-6 flex flex-col items-center justify-center relative select-none">
-
-            <div className="w-full max-w-[340px] md:max-w-[420px] aspect-square flex items-center justify-center relative overflow-visible">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={activeVector}
-                  initial={{ opacity: 0, x: 40, scale: 0.95 }}
-                  animate={{ opacity: 1, x: 0, scale: 1 }}
-                  exit={{ opacity: 0, x: -40, scale: 0.95 }}
-                  transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-                  className="w-full h-full flex items-center justify-center"
-                >
-                  {activeVector === 0 && <AtomVector isDark={isDark} />}
-                  {activeVector === 1 && <ResearchPaperVector isDark={isDark} />}
-                  {activeVector === 2 && <PatentPaperVector isDark={isDark} />}
-                </motion.div>
-              </AnimatePresence>
+            {/* Cycling Animated Vectors (Right) */}
+            <div className="lg:col-span-6 flex flex-col items-center justify-center relative select-none">
+  
+              <div className="w-full max-w-[340px] md:max-w-[420px] aspect-square flex items-center justify-center relative overflow-visible">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={activeVector}
+                    initial={{ opacity: 0, x: 40, scale: 0.95 }}
+                    animate={{ opacity: 1, x: 0, scale: 1 }}
+                    exit={{ opacity: 0, x: -40, scale: 0.95 }}
+                    transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+                    className="w-full h-full flex items-center justify-center"
+                  >
+                    {activeVector === 0 && <AtomVector isDark={isDark} />}
+                    {activeVector === 1 && <ResearchPaperVector isDark={isDark} />}
+                    {activeVector === 2 && <PatentPaperVector isDark={isDark} />}
+                  </motion.div>
+                </AnimatePresence>
+              </div>
             </div>
-
-            {/* Slide Navigation Indicator Dots */}
-            <div className="flex gap-2.5 mt-4 z-20">
-              {[0, 1, 2].map((idx) => (
-                <button
-                  key={idx}
-                  onClick={() => setActiveVector(idx)}
-                  className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
-                    activeVector === idx
-                      ? 'w-6 bg-purple-500 dark:bg-purple-400'
-                      : 'w-2 bg-zinc-300 dark:bg-zinc-800 hover:bg-zinc-400 dark:hover:bg-zinc-700'
-                  }`}
-                  aria-label={`Go to slide ${idx + 1}`}
-                />
-              ))}
-            </div>
-          </div>
 
         </section>
       </div>
@@ -286,16 +270,14 @@ export default function LandingPage() {
 
           {/* Right: Video — window frame */}
           <div>
-            <div className="rounded-xl overflow-hidden border border-purple-500/20 bg-white shadow-lg shadow-purple-500/5">
-              {/* Window title bar */}
-              <div className="px-3 py-2.5 bg-zinc-100 dark:bg-zinc-800 border-b border-purple-500/10" />
+            <div className="rounded-2xl border border-purple-500 dark:border-purple-600 bg-zinc-50 dark:bg-zinc-900/40 shadow-lg shadow-purple-500/20 p-4 md:p-5">
               <video
                 src="/hero-video.mp4"
                 autoPlay
                 muted
                 loop
                 playsInline
-                className="w-full h-auto block"
+                className="w-full h-auto block rounded-xl border border-purple-500/10 dark:border-purple-600/10 shadow-md"
               />
             </div>
           </div>
@@ -323,38 +305,77 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* 4. MINIMAL CTA */}
-      <section className="py-24 px-6 md:px-12 max-w-5xl mx-auto text-center">
-        <div className="border border-zinc-200 dark:border-zinc-800 rounded-2xl p-10 md:p-16 space-y-6 relative overflow-hidden bg-white dark:bg-zinc-900/30 transition-all duration-300">
-          
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] rounded-full bg-emerald-500/5 dark:bg-emerald-400/3 blur-[80px] pointer-events-none" />
+      {/* 4. PREMIUM FOOTER SECTION (Telling About Us & Links) */}
+      <footer id="about" className="border-t border-zinc-200 dark:border-zinc-900 bg-zinc-50/50 dark:bg-zinc-950/20 py-16 transition-colors duration-500 scroll-mt-12">
+        <div className="max-w-7xl mx-auto px-6 md:px-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10">
+          {/* About Us (6 cols on lg) */}
+          <div className="lg:col-span-6 space-y-4">
+            <div className="flex items-center gap-2">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-tr from-purple-600 to-purple-400 text-white shadow-md">
+                <FlaskConical className="h-4 w-4" />
+              </div>
+              <span className="text-base font-bold tracking-tight text-zinc-900 dark:text-white font-display">
+                sanjeevani<span className="text-purple-500">.</span>
+              </span>
+            </div>
+            <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed max-w-md">
+              Sanjeevani is India's premier Academic Technology Transfer platform. We empower university researchers and Technology Transfer Offices (TTOs) to safeguard novel chemical disclosures, coordinate grace period filings under Section 31, and accelerate laboratory discoveries from peer review to commercial patent protection.
+            </p>
+          </div>
 
-          <h2 className="text-2xl md:text-3xl font-semibold text-zinc-900 dark:text-white font-display">
-            The Section 31 clock is ticking.
-          </h2>
-          
-          <p className="mx-auto max-w-md text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
-            Protect your newly published molecules. Secure your laboratory disclosures and university IP starting today.
-          </p>
+          {/* Quick Links (3 cols on lg) */}
+          <div className="lg:col-span-3 space-y-3.5">
+            <h4 className="text-xs font-semibold text-zinc-800 dark:text-zinc-200 uppercase tracking-wider font-mono">
+              Platform
+            </h4>
+            <ul className="space-y-2 text-xs">
+              <li>
+                <a href="#hero" className="text-zinc-500 dark:text-zinc-400 hover:text-purple-500 transition-colors">
+                  Home
+                </a>
+              </li>
+              <li>
+                <a href="#idea" className="text-zinc-500 dark:text-zinc-400 hover:text-purple-500 transition-colors">
+                  Our Mission
+                </a>
+              </li>
+              <li>
+                <a href="#timeline" className="text-zinc-500 dark:text-zinc-400 hover:text-purple-500 transition-colors">
+                  Filing Timeline
+                </a>
+              </li>
+              <li>
+                <Link to="/register" className="text-zinc-500 dark:text-zinc-400 hover:text-purple-500 transition-colors">
+                  Request Access
+                </Link>
+              </li>
+            </ul>
+          </div>
 
-          <div className="pt-2 flex flex-col sm:flex-row justify-center items-center gap-3">
-            <Link to="/register">
-              <button className="w-full sm:w-auto text-xs font-semibold bg-zinc-900 dark:bg-white text-white dark:text-zinc-950 hover:bg-zinc-800 dark:hover:bg-zinc-100 px-5 py-3 rounded-lg transition-all shadow-sm cursor-pointer">
-                Protect your research today
-              </button>
-            </Link>
-            <Link to="/login">
-              <button className="w-full sm:w-auto text-xs font-semibold border border-zinc-300 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-900 text-zinc-700 dark:text-zinc-300 px-5 py-3 rounded-lg transition-all bg-transparent cursor-pointer">
-                Access Dashboard
-              </button>
-            </Link>
+          {/* Contact & Support (3 cols on lg) */}
+          <div className="lg:col-span-3 space-y-3.5">
+            <h4 className="text-xs font-semibold text-zinc-800 dark:text-zinc-200 uppercase tracking-wider font-mono">
+              Contact & Support
+            </h4>
+            <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
+              Support Desk for Indian Academic Technology Transfer Hubs.
+            </p>
+            <div className="text-xs text-purple-600 dark:text-purple-400 font-semibold font-mono">
+              support@sanjeevani.org.in
+            </div>
           </div>
         </div>
-      </section>
 
-      {/* Footer */}
-      <footer className="border-t border-zinc-200 dark:border-zinc-900 px-6 py-8 text-center text-[10px] text-zinc-400 dark:text-zinc-600 max-w-7xl mx-auto">
-        &copy; {new Date().getFullYear()} Sanjeevani. Built for Indian Technology Transfer Offices. All rights reserved.
+        <div className="max-w-7xl mx-auto px-6 md:px-12 mt-12 pt-8 border-t border-zinc-200 dark:border-zinc-900 flex flex-col md:flex-row justify-between items-center gap-4">
+          <div className="text-[10px] text-zinc-400 dark:text-zinc-650">
+            &copy; {new Date().getFullYear()} Sanjeevani. Built for Indian Academic Technology Transfer Offices.
+          </div>
+          <div className="flex gap-6 text-[10px] text-zinc-400 dark:text-zinc-650">
+            <a href="#" className="hover:underline">Privacy Policy</a>
+            <a href="#" className="hover:underline">Terms of Use</a>
+            <a href="#" className="hover:underline">DST-TTO Guidelines</a>
+          </div>
+        </div>
       </footer>
     </div>
   );

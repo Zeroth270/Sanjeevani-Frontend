@@ -13,17 +13,18 @@ export function Layout() {
   const { isAuthenticated } = useAuthStore();
 
   const navLinks = [
+    { label: 'Home', href: '/' },
     { label: 'Dashboard', href: '/dashboard' },
     { label: 'Papers', href: '/papers' },
     { label: 'Alerts', href: '/alerts' },
     { label: 'Settings', href: '/settings' },
   ];
 
-  const isLanding = location.pathname === '/';
+  const showHeader = isAuthenticated && !['/', '/login', '/register'].includes(location.pathname);
 
   return (
     <div className="min-h-screen bg-pearl-50 dark:bg-zinc-950 transition-colors duration-500">
-      {!isLanding && (
+      {showHeader && (
         <header className="sticky top-0 z-50 flex items-center justify-between px-6 py-3 md:px-8 max-w-7xl mx-auto border-b border-zinc-200/50 dark:border-zinc-800/50 bg-pearl-50/80 dark:bg-zinc-950/80 backdrop-blur-md">
           <Link to="/" className="flex items-center gap-2">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-tr from-purple-500 to-purple-400 text-white shadow-md shadow-purple-500/20">

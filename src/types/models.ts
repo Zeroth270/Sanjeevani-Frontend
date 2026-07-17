@@ -45,7 +45,9 @@ export interface Molecule {
 export interface DisclosureWindow {
   id: string;
   moleculeId: string;
+  paperId?: string;
   deadline: string;
+  deadlineDate?: string;
   daysRemaining: number;
   status: 'OPEN' | 'CLOSING_SOON' | 'EXPIRED' | 'FILED';
 }

@@ -35,7 +35,7 @@ export function RouteErrorBoundary() {
           </Button>
           <Link to="/" className="w-full sm:w-auto">
             <Button
-              variant="outline"
+              variant="secondary"
               className="w-full flex items-center gap-2 justify-center"
             >
               <Home className="h-4 w-4" />

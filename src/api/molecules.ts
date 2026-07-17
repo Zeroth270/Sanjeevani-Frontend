@@ -47,7 +47,7 @@ function estimateFormulaAndWeight(smiles: string): { formula: string; weight: nu
       // Normalize 'CL' and 'BR' labels back to proper chemical notation for the formula string
       const displayEl = el === 'CL' ? 'Cl' : (el === 'BR' ? 'Br' : el);
       formula += displayEl + (counts[el] > 1 ? counts[el] : '');
-      weight += counts[el] * atomicWeights[el];
+      weight += counts[el] * (atomicWeights[el] || 0);
     }
   }
   
