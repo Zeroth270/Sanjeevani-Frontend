@@ -18,30 +18,43 @@
   --navy-800: #1E293B;
   --navy-900: #0F172A;
 
-  --saffron-50: #FFFDF5;
-  --saffron-100: #FEF3C7;
-  --saffron-200: #FDE68A;
-  --saffron-300: #FCD34D;
-  --saffron-400: #FBBF24;
-  --saffron-500: #F59E0B;
-  --saffron-600: #D97706;
-  --saffron-700: #B45309;
-  --saffron-800: #92400E;
-  --saffron-900: #78350F;
+  /* Premium Purple Shades */
+  --purple-50: #f5f3ff;
+  --purple-100: #ede9fe;
+  --purple-200: #ddd6fe;
+  --purple-300: #c4b5fd;
+  --purple-400: #a78bfa;
+  --purple-500: #8b5cf6;
+  --purple-600: #7c3aed;
+  --purple-700: #6d28d9;
+  --purple-800: #5b21b6;
+  --purple-900: #4c1d95;
+  --purple-950: #2e1065;
 
-  --success: #10B981;
-  --warning: #F59E0B;
-  --danger: #EF4444;
-  --info: #3B82F6;
+  --saffron-50: var(--purple-50);
+  --saffron-100: var(--purple-100);
+  --saffron-200: var(--purple-200);
+  --saffron-300: var(--purple-300);
+  --saffron-400: var(--purple-400);
+  --saffron-500: var(--purple-500);
+  --saffron-600: var(--purple-600);
+  --saffron-700: var(--purple-700);
+  --saffron-800: var(--purple-800);
+  --saffron-900: var(--purple-900);
+
+  --success: var(--purple-500);
+  --warning: var(--purple-500);
+  --danger: var(--purple-600);
+  --info: var(--purple-500);
 
   --glass-bg: rgba(255, 255, 255, 0.45);
   --glass-border: rgba(0, 0, 0, 0.05);
   --glass-strong-bg: rgba(255, 255, 255, 0.65);
   --glass-strong-border: rgba(0, 0, 0, 0.08);
-  --glass-saffron-bg: rgba(245, 158, 11, 0.03);
-  --glass-saffron-border: rgba(245, 158, 11, 0.1);
-  --glass-emerald-bg: rgba(16, 185, 129, 0.03);
-  --glass-emerald-border: rgba(16, 185, 129, 0.1);
+  --glass-saffron-bg: rgba(139, 92, 246, 0.03);
+  --glass-saffron-border: rgba(139, 92, 246, 0.1);
+  --glass-emerald-bg: rgba(139, 92, 246, 0.03);
+  --glass-emerald-border: rgba(139, 92, 246, 0.1);
 }
 
 .dark {
@@ -60,30 +73,43 @@
   --navy-800: #f4f4f5;
   --navy-900: #fafafa;
 
-  --saffron-50: #1c150c;
-  --saffron-100: #2e1d0f;
-  --saffron-200: #4a2c0a;
-  --saffron-300: #78350f;
-  --saffron-400: #92400e;
-  --saffron-500: #b45309;
-  --saffron-600: #d97706;
-  --saffron-700: #f59e0b;
-  --saffron-800: #fcd34d;
-  --saffron-900: #fef3c7;
+  /* Purple for Dark Mode */
+  --purple-50: #1e1b4b;
+  --purple-100: #2e1065;
+  --purple-200: #4c1d95;
+  --purple-300: #5b21b6;
+  --purple-400: #6d28d9;
+  --purple-500: #8b5cf6;
+  --purple-600: #a78bfa;
+  --purple-700: #c4b5fd;
+  --purple-800: #ddd6fe;
+  --purple-900: #ede9fe;
+  --purple-950: #f5f3ff;
 
-  --success: #34D399;
-  --warning: #FBBF24;
-  --danger: #F87171;
-  --info: #60A5FA;
+  --saffron-50: var(--purple-50);
+  --saffron-100: var(--purple-100);
+  --saffron-200: var(--purple-200);
+  --saffron-300: var(--purple-300);
+  --saffron-400: var(--purple-400);
+  --saffron-500: var(--purple-500);
+  --saffron-600: var(--purple-600);
+  --saffron-700: var(--purple-700);
+  --saffron-800: var(--purple-800);
+  --saffron-900: var(--purple-900);
+
+  --success: var(--purple-500);
+  --warning: var(--purple-500);
+  --danger: var(--purple-600);
+  --info: var(--purple-500);
 
   --glass-bg: rgba(24, 24, 27, 0.45);
   --glass-border: rgba(255, 255, 255, 0.05);
   --glass-strong-bg: rgba(9, 9, 11, 0.65);
   --glass-strong-border: rgba(255, 255, 255, 0.08);
-  --glass-saffron-bg: rgba(217, 119, 6, 0.05);
-  --glass-saffron-border: rgba(217, 119, 6, 0.15);
-  --glass-emerald-bg: rgba(16, 185, 129, 0.05);
-  --glass-emerald-border: rgba(16, 185, 129, 0.15);
+  --glass-saffron-bg: rgba(139, 92, 246, 0.05);
+  --glass-saffron-border: rgba(139, 92, 246, 0.15);
+  --glass-emerald-bg: rgba(139, 92, 246, 0.05);
+  --glass-emerald-border: rgba(139, 92, 246, 0.15);
 }
 
 @theme {
@@ -118,8 +144,82 @@
   --color-danger: var(--danger);
   --color-info: var(--info);
 
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  --font-display: 'Outfit', sans-serif;
+  /* Override standard colors to guarantee purple theme mapping */
+  --color-emerald-50: var(--purple-50);
+  --color-emerald-100: var(--purple-100);
+  --color-emerald-200: var(--purple-200);
+  --color-emerald-300: var(--purple-300);
+  --color-emerald-400: var(--purple-400);
+  --color-emerald-500: var(--purple-500);
+  --color-emerald-600: var(--purple-600);
+  --color-emerald-700: var(--purple-700);
+  --color-emerald-800: var(--purple-800);
+  --color-emerald-900: var(--purple-900);
+  --color-emerald-950: var(--purple-950);
+
+  --color-teal-50: var(--purple-50);
+  --color-teal-100: var(--purple-100);
+  --color-teal-200: var(--purple-200);
+  --color-teal-300: var(--purple-300);
+  --color-teal-400: var(--purple-400);
+  --color-teal-500: var(--purple-500);
+  --color-teal-600: var(--purple-600);
+  --color-teal-700: var(--purple-700);
+  --color-teal-800: var(--purple-800);
+  --color-teal-900: var(--purple-900);
+  --color-teal-950: var(--purple-950);
+
+  --color-blue-50: var(--purple-50);
+  --color-blue-100: var(--purple-100);
+  --color-blue-200: var(--purple-200);
+  --color-blue-300: var(--purple-300);
+  --color-blue-400: var(--purple-400);
+  --color-blue-500: var(--purple-500);
+  --color-blue-600: var(--purple-600);
+  --color-blue-700: var(--purple-700);
+  --color-blue-800: var(--purple-800);
+  --color-blue-900: var(--purple-900);
+  --color-blue-950: var(--purple-950);
+
+  --color-indigo-50: var(--purple-50);
+  --color-indigo-100: var(--purple-100);
+  --color-indigo-200: var(--purple-200);
+  --color-indigo-300: var(--purple-300);
+  --color-indigo-400: var(--purple-400);
+  --color-indigo-500: var(--purple-500);
+  --color-indigo-600: var(--purple-600);
+  --color-indigo-700: var(--purple-700);
+  --color-indigo-800: var(--purple-800);
+  --color-indigo-900: var(--purple-900);
+  --color-indigo-950: var(--purple-950);
+
+  --color-violet-50: var(--purple-50);
+  --color-violet-100: var(--purple-100);
+  --color-violet-200: var(--purple-200);
+  --color-violet-300: var(--purple-300);
+  --color-violet-400: var(--purple-400);
+  --color-violet-500: var(--purple-500);
+  --color-violet-600: var(--purple-600);
+  --color-violet-700: var(--purple-700);
+  --color-violet-800: var(--purple-800);
+  --color-violet-900: var(--purple-900);
+  --color-violet-950: var(--purple-950);
+
+  --color-purple-50: var(--purple-50);
+  --color-purple-100: var(--purple-100);
+  --color-purple-200: var(--purple-200);
+  --color-purple-300: var(--purple-300);
+  --color-purple-400: var(--purple-400);
+  --color-purple-500: var(--purple-500);
+  --color-purple-600: var(--purple-600);
+  --color-purple-700: var(--purple-700);
+  --color-purple-800: var(--purple-800);
+  --color-purple-900: var(--purple-900);
+  --color-purple-950: var(--purple-950);
+
+  --font-sans: 'Inter', sans-serif;
+  --font-display: 'Plus Jakarta Sans', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
 
   --animate-countdown-pulse: countdown-pulse 1.2s ease-in-out infinite;
   --animate-fade-in: fade-in 0.6s cubic-bezier(0.16, 1, 0.3, 1);
@@ -185,7 +285,7 @@
     -webkit-backdrop-filter: blur(16px);
     background: var(--glass-saffron-bg);
     border: 1px solid var(--glass-saffron-border);
-    box-shadow: 0 8px 32px 0 rgba(217, 119, 6, 0.03);
+    box-shadow: 0 8px 32px 0 rgba(139, 92, 246, 0.03);
   }
 
   .glass-emerald {
@@ -193,19 +293,19 @@
     -webkit-backdrop-filter: blur(16px);
     background: var(--glass-emerald-bg);
     border: 1px solid var(--glass-emerald-border);
-    box-shadow: 0 8px 32px 0 rgba(16, 185, 129, 0.03);
+    box-shadow: 0 8px 32px 0 rgba(139, 92, 246, 0.03);
   }
 
   .text-gradient {
-    @apply bg-gradient-to-r from-navy-900 to-emerald-600 bg-clip-text text-transparent dark:from-white dark:to-emerald-400;
+    @apply bg-gradient-to-r from-navy-900 to-purple-600 bg-clip-text text-transparent dark:from-white dark:to-purple-400;
   }
 
   .text-gradient-saffron {
-    @apply bg-gradient-to-r from-saffron-600 to-saffron-400 bg-clip-text text-transparent dark:from-saffron-400 dark:to-saffron-200;
+    @apply bg-gradient-to-r from-purple-600 to-purple-400 bg-clip-text text-transparent dark:from-purple-400 dark:to-purple-200;
   }
 
   .text-gradient-emerald {
-    @apply bg-gradient-to-r from-emerald-600 to-emerald-400 bg-clip-text text-transparent dark:from-emerald-400 dark:to-emerald-200;
+    @apply bg-gradient-to-r from-purple-600 to-purple-400 bg-clip-text text-transparent dark:from-purple-400 dark:to-purple-200;
   }
 
   .bg-grid-pattern {

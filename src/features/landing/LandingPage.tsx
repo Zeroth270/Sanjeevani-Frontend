@@ -68,21 +68,26 @@ export default function LandingPage() {
         <header className="relative z-50 flex items-center justify-between px-6 py-4 md:px-12 max-w-7xl mx-auto">
           <div className="flex items-center gap-2">
             <motion.div 
-              className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-tr from-emerald-500 to-teal-400 text-white shadow-md shadow-emerald-500/20"
+              className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-tr from-purple-500 to-purple-400 text-white shadow-md shadow-purple-500/20"
               whileHover={{ rotate: 8, scale: 1.05 }}
             >
               <FlaskConical className="h-4.5 w-4.5" />
             </motion.div>
             <span className="text-lg font-bold tracking-tight text-zinc-900 dark:text-white font-display">
-              sanjeevani<span className="text-saffron-500">.</span>
+              sanjeevani<span className="text-purple-400">.</span>
             </span>
           </div>
 
           {/* Minimal Navigation Links */}
-          <nav className="hidden md:flex items-center gap-8 text-xs font-medium text-zinc-500 dark:text-zinc-400">
-            <a href="#about" className="hover:text-zinc-900 dark:hover:text-white transition-colors">About Us</a>
-            <a href="#idea" className="hover:text-zinc-900 dark:hover:text-white transition-colors">How it Works</a>
-            <a href="#timeline" className="hover:text-zinc-900 dark:hover:text-white transition-colors">Timeline</a>
+          <nav className="hidden md:flex items-center gap-1 text-xs font-medium text-zinc-500 dark:text-zinc-400">
+            <a href="#about" className="hover:text-zinc-900 dark:hover:text-white transition-colors px-3 py-1.5">About</a>
+            <a href="#idea" className="hover:text-zinc-900 dark:hover:text-white transition-colors px-3 py-1.5">How it Works</a>
+            <a href="#timeline" className="hover:text-zinc-900 dark:hover:text-white transition-colors px-3 py-1.5">Timeline</a>
+            <span className="mx-2 h-4 w-px bg-zinc-300 dark:bg-zinc-700" />
+            <Link to="/dashboard" className="hover:text-zinc-900 dark:hover:text-white transition-colors px-3 py-1.5">Dashboard</Link>
+            <Link to="/papers" className="hover:text-zinc-900 dark:hover:text-white transition-colors px-3 py-1.5">Papers</Link>
+            <Link to="/alerts" className="hover:text-zinc-900 dark:hover:text-white transition-colors px-3 py-1.5">Alerts</Link>
+            <Link to="/settings" className="hover:text-zinc-900 dark:hover:text-white transition-colors px-3 py-1.5">Settings</Link>
           </nav>
 
           <div className="flex items-center gap-4">
@@ -126,12 +131,12 @@ export default function LandingPage() {
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             className="lg:col-span-6 space-y-6 text-left"
           >
-            <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/5 px-3.5 py-1 text-[10px] font-semibold text-emerald-600 dark:text-emerald-400 tracking-wider uppercase">
+            <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/5 px-3.5 py-1 text-[9px] font-mono text-emerald-600 dark:text-emerald-400 tracking-wider uppercase">
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400 animate-pulse" />
               Section 31 Novelty Scanner
             </div>
 
-            <h1 className="text-4xl font-bold leading-[1.1] tracking-tight sm:text-5xl md:text-[54px] font-display text-zinc-900 dark:text-white">
+            <h1 className="text-4xl font-bold leading-[1.1] tracking-tighter sm:text-5xl md:text-[54px] font-display text-zinc-900 dark:text-white">
               Transform research<br />
               into patent success<br />
               with us!
@@ -143,13 +148,13 @@ export default function LandingPage() {
 
             <div className="flex flex-wrap gap-4 pt-2">
               <Link to="/register">
-                <button className="flex items-center gap-1.5 text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600 text-white px-5 py-3 rounded-lg transition-all shadow-md shadow-emerald-500/10 cursor-pointer">
+                <button className="flex items-center gap-1.5 text-xs font-semibold font-display bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600 text-white px-5 py-3 rounded-lg transition-all shadow-md shadow-emerald-500/10 cursor-pointer">
                   Start scanning research
                   <ArrowRight className="h-3.5 w-3.5" />
                 </button>
               </Link>
               <Link to="/login">
-                <button className="text-xs font-semibold border border-saffron-500/30 dark:border-saffron-500/20 hover:border-saffron-500 text-saffron-655 dark:text-saffron-400 hover:bg-saffron-50/50 dark:hover:bg-saffron-950/20 px-5 py-3 rounded-lg transition-all bg-transparent cursor-pointer">
+                <button className="text-xs font-semibold font-display border border-saffron-500/30 dark:border-saffron-500/20 hover:border-saffron-500 text-saffron-655 dark:text-saffron-400 hover:bg-saffron-50/50 dark:hover:bg-saffron-950/20 px-5 py-3 rounded-lg transition-all bg-transparent cursor-pointer">
                   Access Dashboard
                 </button>
               </Link>
