@@ -1,369 +1,370 @@
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useEffect, useRef } from 'react';
+import { motion, useMotionValue, useTransform } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import {
   FlaskConical,
   ArrowRight,
-  GraduationCap,
   Sun,
   Moon,
   Zap,
-  ShieldCheck,
-  Search,
-  CheckCircle2,
+  Clock,
+  Sparkles
 } from 'lucide-react';
-import { Button } from '@/components/ui/Button';
-import { GlassCard } from '@/components/ui/GlassCard';
-import { MovingVectors } from '@/components/ui/MovingVectors';
 import { Timeline } from '@/components/ui/Timeline';
 import { useDarkMode } from '@/hooks/useDarkMode';
 
-// Mock scan steps for the Hero interactive demo
-const scanStates = [
-  { step: 0, text: 'Reading manuscript.pdf...', duration: 2000 },
-  { step: 1, text: 'Extracting chemical entities...', duration: 2500 },
-  { step: 2, text: 'Generating SMILES notation...', duration: 2000 },
-  { step: 3, text: 'Analyzing Section 31 grace period...', duration: 1800 },
-  { step: 4, text: 'Querying global patent registries...', duration: 2200 },
-  { step: 5, text: 'Novelty Scan Complete', duration: 4000 }
-];
+function OrbitingElectron({ rx, ry, rotation: deg, duration, direction = 1, phaseOffset = 0, sphereGradient, r = 10 }: {
+  rx: number; ry: number; rotation: number; duration: number;
+  direction?: number; phaseOffset?: number; sphereGradient: string; r?: number;
+}) {
+  const angle = useMotionValue(phaseOffset);
+  const startRef = useRef(performance.now());
+
+  useEffect(() => {
+    startRef.current = performance.now();
+    let rafId: number;
+    function tick() {
+      const elapsed = (performance.now() - startRef.current) / 1000;
+      const t = (elapsed % duration) / duration;
+      angle.set(phaseOffset + t * 360 * direction);
+      rafId = requestAnimationFrame(tick);
+    }
+    rafId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(rafId);
+  }, [angle, phaseOffset, duration, direction]);
+
+  const rad = (deg * Math.PI) / 180;
+
+  const cx = useTransform(angle, (v) => {
+    const vr = (v * Math.PI) / 180;
+    return 200 + rx * Math.cos(vr) * Math.cos(rad) - ry * Math.sin(vr) * Math.sin(rad);
+  });
+
+  const cy = useTransform(angle, (v) => {
+    const vr = (v * Math.PI) / 180;
+    return 200 + rx * Math.cos(vr) * Math.sin(rad) + ry * Math.sin(vr) * Math.cos(rad);
+  });
+
+  return <motion.circle r={r} fill={sphereGradient} cx={cx} cy={cy} />;
+}
 
 export default function LandingPage() {
   const { isDark, toggle } = useDarkMode();
-  const [scanStep, setScanStep] = useState(0);
-
-  // Cycle through scanning states for the interactive hero widget
-  useEffect(() => {
-    const runScanCycle = () => {
-      const current = scanStates[scanStep]! || scanStates[0]!;
-      const timer = setTimeout(() => {
-        setScanStep((prev) => (prev + 1) % scanStates.length);
-      }, current.duration);
-      return () => clearTimeout(timer);
-    };
-    runScanCycle();
-  }, [scanStep]);
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-pearl-50 dark:bg-zinc-950 transition-colors duration-300">
-      {/* Dynamic Animated Vector Background */}
-      <MovingVectors />
+    <div className="relative min-h-screen bg-pearl-50 dark:bg-zinc-950 transition-colors duration-500 overflow-x-hidden">
+      
+      {/* 1. HERO & NAVIGATION CONTAINER */}
+      <div className="relative bg-pearl-50 dark:bg-[#06040d] text-zinc-900 dark:text-white overflow-hidden pb-24 pt-4 border-b border-zinc-200 dark:border-zinc-900 transition-colors duration-500">
+        
+        {/* Ambient Glowing Background Lights */}
+        <div className="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] rounded-full bg-emerald-500/5 blur-[120px] pointer-events-none" />
+        <div className="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] rounded-full bg-purple-600/5 dark:bg-purple-600/10 blur-[150px] pointer-events-none" />
+        
+        {/* Subtle grid pattern */}
+        <div className="absolute inset-0 bg-grid-pattern opacity-[0.03] dark:opacity-[0.04] pointer-events-none" />
 
-      {/* Navigation Header */}
-      <header className="relative z-50 flex items-center justify-between px-6 py-5 md:px-12 max-w-7xl mx-auto">
-        <div className="flex items-center gap-2">
-          <motion.div 
-            className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-400 text-white shadow-md shadow-emerald-500/20"
-            whileHover={{ rotate: 10, scale: 1.05 }}
-          >
-            <FlaskConical className="h-5 w-5" />
-          </motion.div>
-          <span className="text-xl font-bold tracking-tight text-navy-900 dark:text-white font-display">
-            Sanjeevani
-          </span>
-        </div>
+        {/* Top Header */}
+        <header className="relative z-50 flex items-center justify-between px-6 py-4 md:px-12 max-w-7xl mx-auto">
+          <div className="flex items-center gap-2">
+            <motion.div 
+              className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-tr from-emerald-500 to-teal-400 text-white shadow-md shadow-emerald-500/20"
+              whileHover={{ rotate: 8, scale: 1.05 }}
+            >
+              <FlaskConical className="h-4.5 w-4.5" />
+            </motion.div>
+            <span className="text-lg font-bold tracking-tight text-zinc-900 dark:text-white font-display">
+              sanjeevani<span className="text-saffron-500">.</span>
+            </span>
+          </div>
 
-        <nav className="flex items-center gap-4">
-          {/* Dark Mode Toggle Button */}
-          <motion.button
-            onClick={toggle}
-            className="flex h-10 w-10 items-center justify-center rounded-xl glass border border-white/10 dark:border-zinc-800 text-navy-600 dark:text-navy-300 hover:text-navy-900 dark:hover:text-white transition-all cursor-pointer"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            aria-label="Toggle theme"
-          >
-            {isDark ? (
-              <Sun className="h-5 w-5 text-saffron-400" />
-            ) : (
-              <Moon className="h-5 w-5 text-navy-700" />
-            )}
-          </motion.button>
+          {/* Minimal Navigation Links */}
+          <nav className="hidden md:flex items-center gap-8 text-xs font-medium text-zinc-500 dark:text-zinc-400">
+            <a href="#about" className="hover:text-zinc-900 dark:hover:text-white transition-colors">About Us</a>
+            <a href="#idea" className="hover:text-zinc-900 dark:hover:text-white transition-colors">How it Works</a>
+            <a href="#timeline" className="hover:text-zinc-900 dark:hover:text-white transition-colors">Timeline</a>
+          </nav>
 
-          <Link
-            to="/login"
-            className="text-sm font-semibold text-navy-600 dark:text-navy-300 hover:text-navy-900 dark:hover:text-white transition-colors px-3 py-2"
-          >
-            Log in
-          </Link>
+          <div className="flex items-center gap-4">
+            {/* Dark Mode Toggle Button */}
+            <motion.button
+              onClick={toggle}
+              className="flex h-9 w-9 items-center justify-center rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-all cursor-pointer"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              aria-label="Toggle theme"
+            >
+              {isDark ? (
+                <Sun className="h-4.5 w-4.5 text-saffron-400" />
+              ) : (
+                <Moon className="h-4.5 w-4.5 text-zinc-650" />
+              )}
+            </motion.button>
+
+            <Link
+              to="/login"
+              className="text-xs font-semibold text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors px-3 py-2"
+            >
+              Log in
+            </Link>
+            
+            <Link to="/register">
+              <button className="text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600 text-white px-4 py-2 rounded-lg transition-all shadow-sm cursor-pointer">
+                Get Started
+              </button>
+            </Link>
+          </div>
+        </header>
+
+        {/* Hero Section Content */}
+        <section className="relative z-10 mx-auto max-w-7xl px-6 pt-16 md:px-12 grid gap-12 lg:grid-cols-12 lg:items-center">
           
-          <Link to="/register">
-            <Button variant="primary" size="sm" className="shadow-lg shadow-emerald-500/20 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white">
-              Get Started
-            </Button>
-          </Link>
-        </nav>
-      </header>
-
-      {/* Hero Section */}
-      <main className="relative z-10 mx-auto max-w-7xl px-6 pb-24 pt-8 md:px-12">
-        <section className="grid gap-12 lg:grid-cols-12 lg:items-center lg:pt-12">
           {/* Hero Content (Left) */}
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-7 space-y-6 text-left"
+            className="lg:col-span-6 space-y-6 text-left"
           >
-            <div className="inline-flex items-center gap-2 rounded-full glass border border-white/10 dark:border-zinc-800 px-4 py-1.5 text-xs font-semibold text-emerald-600 dark:text-emerald-400">
-              <GraduationCap className="h-4 w-4" />
-              Built for CSIR Labs & Indian Technology Transfer Offices
+            <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/5 px-3.5 py-1 text-[10px] font-semibold text-emerald-600 dark:text-emerald-400 tracking-wider uppercase">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400 animate-pulse" />
+              Section 31 Novelty Scanner
             </div>
 
-            <h1 className="text-4xl font-extrabold leading-none tracking-tight sm:text-5xl md:text-6xl font-display text-navy-900 dark:text-white">
-              The molecule <span className="text-gradient-emerald">novelty</span> scanner for India&apos;s{' '}
-              <span className="text-gradient-saffron font-extrabold">Section 31</span>
+            <h1 className="text-4xl font-bold leading-[1.1] tracking-tight sm:text-5xl md:text-[54px] font-display text-zinc-900 dark:text-white">
+              Transform research<br />
+              into patent success<br />
+              with us!
             </h1>
 
-            <p className="max-w-2xl text-base leading-relaxed text-navy-500 dark:text-navy-400 md:text-lg">
-              Most Indian academic chemistry research never reaches the patent office because disclosures are found too late. Sanjeevani scans research publications, parses complex formulas, and alerts TTOs before the 12-month grace window closes.
+            <p className="max-w-xl text-sm leading-relaxed text-zinc-500 dark:text-zinc-400">
+              Sanjeevani scans chemistry publications, extracts molecular formulas in real-time, and alerts Technology Transfer Offices before the 12-month Section 31 grace period expires.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 pt-4">
+            <div className="flex flex-wrap gap-4 pt-2">
               <Link to="/register">
-                <Button variant="primary" size="lg" className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg shadow-emerald-500/20">
+                <button className="flex items-center gap-1.5 text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600 text-white px-5 py-3 rounded-lg transition-all shadow-md shadow-emerald-500/10 cursor-pointer">
                   Start scanning research
-                  <ArrowRight className="h-4 w-4 ml-1" />
-                </Button>
+                  <ArrowRight className="h-3.5 w-3.5" />
+                </button>
               </Link>
               <Link to="/login">
-                <Button variant="secondary" size="lg" className="w-full sm:w-auto dark:border-zinc-800 dark:hover:bg-zinc-900 text-navy-800 dark:text-white">
+                <button className="text-xs font-semibold border border-saffron-500/30 dark:border-saffron-500/20 hover:border-saffron-500 text-saffron-655 dark:text-saffron-400 hover:bg-saffron-50/50 dark:hover:bg-saffron-950/20 px-5 py-3 rounded-lg transition-all bg-transparent cursor-pointer">
                   Access Dashboard
-                </Button>
+                </button>
               </Link>
             </div>
-
-            <div className="flex items-center gap-6 pt-6 border-t border-navy-100 dark:border-zinc-800">
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="h-5 w-5 text-emerald-500" />
-                <span className="text-xs font-medium text-navy-600 dark:text-navy-400">SMILES Extraction</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="h-5 w-5 text-emerald-500" />
-                <span className="text-xs font-medium text-navy-600 dark:text-navy-400">Patent Cross-checking</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="h-5 w-5 text-emerald-500" />
-                <span className="text-xs font-medium text-navy-600 dark:text-navy-400">Section 31 Reminders</span>
-              </div>
-            </div>
           </motion.div>
 
-          {/* Interactive Molecule Scanner Widget (Right) */}
+          {/* Interactive orbiting SVG Atom (Right) */}
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-5 flex justify-center"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:col-span-6 flex justify-center relative select-none"
           >
-            <GlassCard variant="strong" className="w-full max-w-sm border border-white/20 dark:border-zinc-800 shadow-2xl relative overflow-hidden group">
-              {/* Glowing scanning laser line */}
-              {scanStep < 5 && (
-                <motion.div
-                  className="absolute left-0 right-0 h-1 bg-gradient-to-r from-transparent via-emerald-400 to-transparent blur-[1px] z-20"
-                  animate={{ top: ['5%', '95%', '5%'] }}
-                  transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-                />
-              )}
+            {/* Ambient glows behind the SVG */}
+            <div className="absolute w-[280px] h-[280px] rounded-full bg-purple-600/5 dark:bg-purple-600/10 blur-[80px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
+            <div className="absolute w-[180px] h-[180px] rounded-full bg-emerald-500/5 dark:bg-emerald-500/5 blur-[60px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
 
-              {/* Header */}
-              <div className="flex items-center justify-between pb-4 border-b border-navy-100 dark:border-zinc-800">
-                <div className="flex items-center gap-2">
-                  <span className="relative flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                  </span>
-                  <span className="text-xs font-semibold uppercase tracking-wider text-navy-500 dark:text-navy-400">
-                    Live Extractor Feed
-                  </span>
-                </div>
-                <div className="text-[10px] font-mono bg-navy-100 dark:bg-zinc-800 text-navy-600 dark:text-navy-300 px-2 py-0.5 rounded">
-                  v1.2.0-core
-                </div>
-              </div>
-
-              {/* Scanning visual area */}
-              <div className="py-8 flex flex-col items-center justify-center relative min-h-[220px]">
-                {/* SVG Chemical Molecule Structure */}
-                <div className="relative text-navy-700 dark:text-zinc-200">
-                  <svg width="180" height="150" viewBox="0 0 180 150" className="opacity-90">
-                    {/* Ring Structure */}
-                    <polygon
-                      points="90,15 130,38 130,85 90,108 50,85 50,38"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2.5"
-                      className={`${scanStep >= 2 ? 'stroke-emerald-500 transition-colors duration-500' : ''}`}
-                    />
-                    {/* Inner aromatic ring */}
-                    <circle
-                      cx="90"
-                      cy="61"
-                      r="24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      strokeDasharray="4 3"
-                      className={`opacity-70 ${scanStep >= 2 ? 'stroke-emerald-400/70 transition-colors duration-500' : ''}`}
-                    />
-                    {/* Substituent bonds */}
-                    <line x1="90" y1="15" x2="90" y2="2" stroke="currentColor" strokeWidth="2.5" />
-                    <line x1="130" y1="38" x2="155" y2="25" stroke="currentColor" strokeWidth="2.5" />
-                    <line x1="50" y1="85" x2="25" y2="100" stroke="currentColor" strokeWidth="2.5" />
-                    
-                    {/* Text groups */}
-                    <text x="82" y="1" className="text-[11px] font-bold font-mono fill-red-500">OH</text>
-                    <text x="156" y="24" className="text-[11px] font-bold font-mono fill-blue-500">NH₂</text>
-                    <text x="2" y="106" className="text-[11px] font-bold font-mono fill-zinc-500">COOH</text>
-                  </svg>
-                  
-                  {/* Glowing Molecule Overlay on Success */}
-                  <AnimatePresence>
-                    {scanStep === 5 && (
-                      <motion.div
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0 }}
-                        className="absolute inset-0 bg-emerald-500/5 dark:bg-emerald-400/5 rounded-full filter blur-xl animate-pulse"
-                      />
-                    )}
-                  </AnimatePresence>
-                </div>
-
-                {/* Simulated Floating Confidence Badge */}
-                <AnimatePresence>
-                  {scanStep >= 3 && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="absolute bottom-2 right-4 bg-emerald-500 text-white font-mono text-[10px] font-bold px-2 py-1 rounded shadow-lg"
-                    >
-                      98.4% Confidence
-                    </motion.div>
+            <motion.div
+              animate={{
+                y: [0, -10, 0],
+              }}
+              transition={{
+                duration: 6,
+                repeat: Infinity,
+                ease: 'easeInOut',
+              }}
+              className="w-full max-w-[340px] md:max-w-[420px] aspect-square flex items-center justify-center pointer-events-none"
+            >
+              <svg viewBox="0 0 400 400" className="w-full h-full">
+                <defs>
+                  {isDark ? (
+                    <radialGradient id="electronSphere" cx="30%" cy="30%" r="70%">
+                      <stop offset="0%" stopColor="#ffffff" />
+                      <stop offset="35%" stopColor="#e4e4e7" />
+                      <stop offset="70%" stopColor="#a1a1aa" />
+                      <stop offset="100%" stopColor="#3f3f46" />
+                    </radialGradient>
+                  ) : (
+                    <radialGradient id="electronSphere" cx="30%" cy="30%" r="70%">
+                      <stop offset="0%" stopColor="#71717a" />
+                      <stop offset="35%" stopColor="#3f3f46" />
+                      <stop offset="70%" stopColor="#18181b" />
+                      <stop offset="100%" stopColor="#020202" />
+                    </radialGradient>
                   )}
-                </AnimatePresence>
-              </div>
+                </defs>
 
-              {/* Live status feed footer */}
-              <div className="bg-navy-50/50 dark:bg-zinc-900/50 p-4 rounded-xl border border-navy-100/50 dark:border-zinc-800/50 min-h-[96px] flex flex-col justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded bg-emerald-100 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400">
-                    <Zap className="h-3 w-3" />
-                  </div>
-                  <span className="text-xs font-semibold text-navy-800 dark:text-zinc-200">
-                    Status Indicator
-                  </span>
-                </div>
+                {/* Orbit 1 (Tilted 10°) */}
+                <ellipse
+                  cx="200" cy="200" rx="160" ry="55" fill="none"
+                  stroke={isDark ? "#ffffff" : "#18181b"}
+                  strokeWidth="1.5"
+                  opacity={isDark ? "0.6" : "0.7"}
+                  transform="rotate(10 200 200)"
+                />
+                <OrbitingElectron rx={160} ry={55} rotation={10} duration={5} sphereGradient="url(#electronSphere)" />
 
-                <div className="mt-2 text-xs font-mono text-navy-600 dark:text-zinc-400 min-h-[16px]">
-                  {(scanStates[scanStep] || scanStates[0])!.text}
-                </div>
+                {/* Orbit 2 (Tilted 70°) */}
+                <ellipse
+                  cx="200" cy="200" rx="160" ry="55" fill="none"
+                  stroke={isDark ? "#ffffff" : "#18181b"}
+                  strokeWidth="1.5"
+                  opacity={isDark ? "0.6" : "0.7"}
+                  transform="rotate(70 200 200)"
+                />
+                <OrbitingElectron rx={160} ry={55} rotation={70} duration={5} direction={-1} sphereGradient="url(#electronSphere)" />
 
-                {/* Progress bar */}
-                <div className="mt-2 w-full h-1 bg-navy-100 dark:bg-zinc-800 rounded-full overflow-hidden">
-                  <motion.div
-                    className="h-full bg-emerald-500"
-                    initial={{ width: '0%' }}
-                    animate={{ width: `${((scanStep + 1) / scanStates.length) * 100}%` }}
-                    transition={{ duration: 0.5 }}
-                  />
-                </div>
-              </div>
+                {/* Orbit 3 (Tilted -50°) */}
+                <ellipse
+                  cx="200" cy="200" rx="160" ry="55" fill="none"
+                  stroke={isDark ? "#ffffff" : "#18181b"}
+                  strokeWidth="1.5"
+                  opacity={isDark ? "0.6" : "0.7"}
+                  transform="rotate(-50 200 200)"
+                />
+                <OrbitingElectron rx={160} ry={55} rotation={-50} duration={5} sphereGradient="url(#electronSphere)" />
 
-              {/* Bottom Result Overview */}
-              <AnimatePresence>
-                {scanStep === 5 && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 15 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="absolute inset-0 bg-zinc-900/95 dark:bg-zinc-950/98 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center text-white"
-                  >
-                    <div className="h-12 w-12 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center mb-4">
-                      <ShieldCheck className="h-6 w-6 text-emerald-400" />
-                    </div>
-                    
-                    <h4 className="font-bold text-lg font-display text-white">Compound Extracted</h4>
-                    
-                    <div className="my-3 py-1.5 px-4 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm font-mono tracking-wider font-semibold">
-                      SMILES: Nc1ccc(C(=O)O)cc1O
-                    </div>
-                    
-                    <div className="flex items-center gap-1.5 text-xs text-zinc-400 mt-1">
-                      <Search className="h-3.5 w-3.5" />
-                      <span>Registry status: <b>Highly Novel</b></span>
-                    </div>
-
-                    <div className="mt-6 flex gap-3">
-                      <button 
-                        onClick={() => setScanStep(0)} 
-                        className="text-xs font-semibold px-4 py-2 border border-zinc-700 hover:border-zinc-500 rounded-lg transition-colors cursor-pointer"
-                      >
-                        Reset Demo
-                      </button>
-                      <Link to="/register">
-                        <button className="text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg transition-colors cursor-pointer">
-                          Create Scanner Account
-                        </button>
-                      </Link>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </GlassCard>
+                {/* 7. Central Nucleus Sphere (Adapts to theme) */}
+                {/* Outer Glow */}
+                <circle
+                  cx="200"
+                  cy="200"
+                  r="35"
+                  fill="none"
+                  stroke={isDark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.03)"}
+                  strokeWidth="6"
+                  className="animate-pulse"
+                />
+                {/* 3D Sphere */}
+                <circle
+                  cx="200"
+                  cy="200"
+                  r="30"
+                  fill="url(#electronSphere)"
+                />
+              </svg>
+            </motion.div>
           </motion.div>
-        </section>
 
-        {/* Section 31 Timeline workflow */}
-        <section className="mt-36">
-          <div className="text-center max-w-2xl mx-auto space-y-3 mb-16">
-            <h2 className="text-xs font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400">
-              The Section 31 Timeline
+        </section>
+      </div>
+
+      {/* 2. CORE IDEA SECTION ("What we are onto") */}
+      <section id="idea" className="py-24 px-6 md:px-12 max-w-7xl mx-auto bg-pearl-50 dark:bg-zinc-950 transition-colors duration-500">
+        <div className="grid gap-12 lg:grid-cols-12 items-start">
+          
+          {/* Header Description */}
+          <div className="lg:col-span-4 space-y-4">
+            <span className="text-[10px] font-mono tracking-widest text-emerald-600 dark:text-emerald-400 uppercase">
+              01 / The Mission
+            </span>
+            <h2 className="text-2xl md:text-3xl font-semibold tracking-tight text-zinc-900 dark:text-white font-display">
+              What we are onto.
             </h2>
-            <p className="text-3xl font-extrabold text-navy-900 dark:text-white font-display">
-              Protecting intellectual property step-by-step
+            <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
+              Every year, key academic disclosures in chemistry are lost because publication happens before patent filing. We are building the bridge that captures disclosures early, giving universities the legal time they need to protect their intellectual property.
             </p>
-            <p className="text-sm text-navy-500 dark:text-zinc-400">
-              India&apos;s Section 31 allows a grace period of 12 months for patenting after public disclosure. Missing this window blocks patenting permanently. Sanjeevani automates the tracking so you file in time.
+          </div>
+
+          {/* Minimal 3-part layout details */}
+          <div className="lg:col-span-8 grid gap-8 md:grid-cols-3">
+            
+            {/* Step 1 */}
+            <div className="space-y-3 pt-6 border-t border-zinc-200 dark:border-zinc-800">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-mono text-zinc-400 dark:text-zinc-600">01</span>
+                <Sparkles className="h-4 w-4 text-emerald-500" />
+              </div>
+              <h3 className="text-sm font-semibold text-zinc-900 dark:text-white">Automated Ingestion</h3>
+              <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
+                Sanjeevani continuously scans publication sites, preprint platforms, and university portals to ingest research papers.
+              </p>
+            </div>
+
+            {/* Step 2 */}
+            <div className="space-y-3 pt-6 border-t border-zinc-200 dark:border-zinc-800">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-mono text-zinc-400 dark:text-zinc-600">02</span>
+                <Zap className="h-4 w-4 text-saffron-500" />
+              </div>
+              <h3 className="text-sm font-semibold text-zinc-900 dark:text-white">Chemical NLP Parsing</h3>
+              <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
+                Our NLP core extracts molecular representations from complex inline texts, tables, and images, converting them into digital SMILES codes.
+              </p>
+            </div>
+
+            {/* Step 3 */}
+            <div className="space-y-3 pt-6 border-t border-zinc-200 dark:border-zinc-800">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-mono text-zinc-400 dark:text-zinc-600">03</span>
+                <Clock className="h-4 w-4 text-emerald-500" />
+              </div>
+              <h3 className="text-sm font-semibold text-zinc-900 dark:text-white">Grace Window Alerts</h3>
+              <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
+                We monitor the legal 12-month grace window under India&apos;s Section 31 and alert Tech Transfer Offices to file before expiration.
+              </p>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      {/* 3. TIMELINE SECTION */}
+      <section id="timeline" className="py-20 border-t border-zinc-200 dark:border-zinc-900 bg-zinc-50/50 dark:bg-zinc-900/10 transition-colors duration-500">
+        <div className="max-w-7xl mx-auto px-6 md:px-12">
+          
+          <div className="text-center max-w-xl mx-auto space-y-3 mb-16">
+            <span className="text-[10px] font-mono tracking-widest text-emerald-600 dark:text-emerald-400 uppercase">
+              02 / The Process
+            </span>
+            <h2 className="text-2xl md:text-3xl font-semibold tracking-tight text-zinc-900 dark:text-white font-display">
+              The Section 31 Countdown.
+            </h2>
+            <p className="text-xs text-zinc-500 dark:text-zinc-400 max-w-md mx-auto leading-relaxed">
+              Tracking disclosures step-by-step to secure university intellectual property before the legal grace period terminates.
             </p>
           </div>
 
           <Timeline />
-        </section>
+        </div>
+      </section>
 
-        {/* Action Center / CTA */}
-        <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="mt-32 rounded-3xl glass-emerald p-10 text-center md:p-16 border border-emerald-500/10 dark:border-emerald-500/20 relative overflow-hidden"
-        >
-          <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/5 to-teal-500/5 -z-10" />
+      {/* 4. MINIMAL CTA */}
+      <section className="py-24 px-6 md:px-12 max-w-5xl mx-auto text-center">
+        <div className="border border-zinc-200 dark:border-zinc-800 rounded-2xl p-10 md:p-16 space-y-6 relative overflow-hidden bg-white dark:bg-zinc-900/30 transition-all duration-300">
           
-          <h2 className="text-3xl font-extrabold text-navy-900 dark:text-white font-display">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] rounded-full bg-emerald-500/5 dark:bg-emerald-400/3 blur-[80px] pointer-events-none" />
+
+          <h2 className="text-2xl md:text-3xl font-semibold text-zinc-900 dark:text-white font-display">
             The Section 31 clock is ticking.
           </h2>
-          <p className="mx-auto mt-4 max-w-xl text-sm text-navy-500 dark:text-zinc-400">
-            For every newly published molecule, the 12-month grace window shrinks. Take charge of your university or laboratory disclosures starting today.
-          </p>
           
-          <div className="mt-8 flex flex-col sm:flex-row justify-center items-center gap-4">
+          <p className="mx-auto max-w-md text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
+            Protect your newly published molecules. Secure your laboratory disclosures and university IP starting today.
+          </p>
+
+          <div className="pt-2 flex flex-col sm:flex-row justify-center items-center gap-3">
             <Link to="/register">
-              <Button variant="primary" size="lg" className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg shadow-emerald-500/20">
+              <button className="w-full sm:w-auto text-xs font-semibold bg-zinc-900 dark:bg-white text-white dark:text-zinc-950 hover:bg-zinc-800 dark:hover:bg-zinc-100 px-5 py-3 rounded-lg transition-all shadow-sm cursor-pointer">
                 Protect your research today
-              </Button>
+              </button>
             </Link>
             <Link to="/login">
-              <Button variant="secondary" size="lg" className="w-full sm:w-auto dark:border-zinc-800 dark:hover:bg-zinc-900 text-navy-800 dark:text-white">
-                Partner with us
-              </Button>
+              <button className="w-full sm:w-auto text-xs font-semibold border border-zinc-300 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-900 text-zinc-700 dark:text-zinc-300 px-5 py-3 rounded-lg transition-all bg-transparent cursor-pointer">
+                Access Dashboard
+              </button>
             </Link>
           </div>
-        </motion.section>
-      </main>
+        </div>
+      </section>
 
       {/* Footer */}
-      <footer className="relative z-10 border-t border-navy-100 dark:border-zinc-900 px-6 py-8 text-center text-xs text-navy-400 dark:text-zinc-500 max-w-7xl mx-auto">
-        &copy; {new Date().getFullYear()} Sanjeevani. Built for Indian technology transfer offices and laboratory patenting.
+      <footer className="border-t border-zinc-200 dark:border-zinc-900 px-6 py-8 text-center text-[10px] text-zinc-400 dark:text-zinc-600 max-w-7xl mx-auto">
+        &copy; {new Date().getFullYear()} Sanjeevani. Built for Indian Technology Transfer Offices. All rights reserved.
       </footer>
     </div>
   );
